@@ -66,7 +66,7 @@
                     <headers>
                         <header>
                             <name>User-Agent</name>
-                            <value>I am making a Zabbix plugin.Wanting to monitor weather data for several cities as a weather nerd. Thank you. MattIsam@yahoo.com</value>
+                            <value>Zabbix plugin</value>
                         </header>
                     </headers>
                     <tags>
