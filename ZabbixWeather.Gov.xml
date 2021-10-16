@@ -1,4 +1,4 @@
-
+<zabbix_export>
     <version>5.4</version>
     <date>2021-10-16T05:12:02Z</date>
     <groups>
@@ -68,7 +68,7 @@ https://github.com/matthewisam/ZabbixWeather.Gov</description>
                     <headers>
                         <header>
                             <name>User-Agent</name>
-                            <value>ChangeMe!  Change Me!</value>
+                            <value>CHANGE ME CHANGE ME CHANGEME</value>
                         </header>
                     </headers>
                     <tags>
@@ -633,3 +633,4 @@ https://github.com/matthewisam/ZabbixWeather.Gov</description>
             </graph_items>
         </graph>
     </graphs>
+</zabbix_export>
