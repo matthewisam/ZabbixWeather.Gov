@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<zabbix_export>
+
     <version>5.4</version>
-    <date>2021-10-16T01:58:18Z</date>
+    <date>2021-10-16T05:12:02Z</date>
     <groups>
         <group>
             <uuid>a571c0d144b14fd4a87a9d9b2aa9fcd6</uuid>
@@ -11,8 +10,12 @@
     <templates>
         <template>
             <uuid>142b8ee5547e4569b92814588b902085</uuid>
-            <template>Template App Gov weather</template>
-            <name>Template App Gov weather</name>
+            <template>Template App Gov Weather</template>
+            <name>Template App Gov Weather</name>
+            <description>Made by Matt. Based off of a few other weather programs I found that are super out of date and don't work or has problems.
+This one works well for places in the US. Could be easily modified to work with JSON or XML data coming from other weather services from around the world.
+If you fork this and make it work for other countries I would love to hear about it.
+https://github.com/matthewisam/ZabbixWeather.Gov</description>
             <groups>
                 <group>
                     <name>Templates/Applications</name>
@@ -62,11 +65,10 @@
                             <value>false</value>
                         </query_field>
                     </query_fields>
-                    <status_codes>200-399</status_codes>
                     <headers>
                         <header>
                             <name>User-Agent</name>
-                            <value>Zabbix plugin</value>
+                            <value>ChangeMe!  Change Me!</value>
                         </header>
                     </headers>
                     <tags>
@@ -106,7 +108,7 @@
                     <triggers>
                         <trigger>
                             <uuid>410ef5ec59994a8398d98bb71a837606</uuid>
-                            <expression>last(/Template App Gov weather/get_weathergov.http_code)&lt;&gt;200 or nodata(/Template App Gov weather/get_weathergov.http_code,30m)=1</expression>
+                            <expression>last(/Template App Gov Weather/get_weathergov.http_code)&lt;&gt;200 or nodata(/Template App Gov Weather/get_weathergov.http_code,30m)=1</expression>
                             <name>Issues with getting weather data</name>
                             <priority>WARNING</priority>
                             <manual_close>YES</manual_close>
@@ -134,6 +136,32 @@
                         <key>get_weather.http</key>
                     </master_item>
                     <request_method>POST</request_method>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>GovWeather</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>ba2be1bcbe9f42d895c98cca896ab29c</uuid>
+                    <name>Heat Index</name>
+                    <type>DEPENDENT</type>
+                    <key>heat.index</key>
+                    <delay>0</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>C</units>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.properties.heatIndex.value</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>get_weather.http</key>
+                    </master_item>
                     <tags>
                         <tag>
                             <tag>Application</tag>
@@ -195,11 +223,143 @@
                     </tags>
                 </item>
                 <item>
+                    <uuid>7bb77420b5bf43d38b4b542638c44310</uuid>
+                    <name>MaxTemperature24Hour</name>
+                    <type>DEPENDENT</type>
+                    <key>max.temperature24h</key>
+                    <delay>0</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>C</units>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.properties.maxTemperatureLast24Hours.value</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>get_weather.http</key>
+                    </master_item>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>GovWeather</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>1b94b623ba0c4d62886be99d6702fe92</uuid>
+                    <name>MinTemperature24Hour</name>
+                    <type>DEPENDENT</type>
+                    <key>min.temperature24h</key>
+                    <delay>0</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>C</units>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.properties.minTemperatureLast24Hours.value</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>get_weather.http</key>
+                    </master_item>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>GovWeather</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>c6a8a5d8f1ff4986b4a9c519b1412b6f</uuid>
+                    <name>precipitationLast3Hours</name>
+                    <type>DEPENDENT</type>
+                    <key>precipitation.last.3.hour</key>
+                    <delay>0</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>m</units>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.properties.precipitationLast3Hours.value</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>get_weather.http</key>
+                    </master_item>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>GovWeather</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>17c5b560de96470bb259b4c813493364</uuid>
+                    <name>precipitationLast6Hours</name>
+                    <type>DEPENDENT</type>
+                    <key>precipitation.last.6.hour</key>
+                    <delay>0</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>m</units>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.properties.precipitationLast6Hours.value</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>get_weather.http</key>
+                    </master_item>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>GovWeather</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>009c584b62574ad58c3a8e456240d2d1</uuid>
+                    <name>precipitationLastHour</name>
+                    <type>DEPENDENT</type>
+                    <key>precipitationLastHour</key>
+                    <delay>0</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>m</units>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.properties.precipitationLastHour.value</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>get_weather.http</key>
+                    </master_item>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>GovWeather</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
                     <uuid>a9dacbc4d73b4b2c89769367dabeaa10</uuid>
                     <name>Pressure</name>
                     <type>DEPENDENT</type>
                     <key>pressure</key>
                     <delay>0</delay>
+                    <history>730d</history>
+                    <trends>3650d</trends>
                     <value_type>FLOAT</value_type>
                     <units>Pa</units>
                     <preprocessing>
@@ -224,8 +384,10 @@
                     <uuid>e3835630445648c7a296f47a40cbc392</uuid>
                     <name>Temperature</name>
                     <type>DEPENDENT</type>
-                    <key>temperature.value</key>
+                    <key>temperature</key>
                     <delay>0</delay>
+                    <history>730d</history>
+                    <trends>3650d</trends>
                     <value_type>FLOAT</value_type>
                     <units>C</units>
                     <preprocessing>
@@ -240,60 +402,6 @@
                         <key>get_weather.http</key>
                     </master_item>
                     <request_method>POST</request_method>
-                    <tags>
-                        <tag>
-                            <tag>Application</tag>
-                            <value>GovWeather</value>
-                        </tag>
-                    </tags>
-                </item>
-                <item>
-                    <uuid>da671a38008b4065a21aace61d22faec</uuid>
-                    <name>High</name>
-                    <type>DEPENDENT</type>
-                    <key>temp_max</key>
-                    <delay>0</delay>
-                    <status>DISABLED</status>
-                    <value_type>FLOAT</value_type>
-                    <units>C</units>
-                    <preprocessing>
-                        <step>
-                            <type>JSONPATH</type>
-                            <parameters>
-                                <parameter>$.body.main.temp_max</parameter>
-                            </parameters>
-                        </step>
-                    </preprocessing>
-                    <master_item>
-                        <key>get_weather.http</key>
-                    </master_item>
-                    <tags>
-                        <tag>
-                            <tag>Application</tag>
-                            <value>GovWeather</value>
-                        </tag>
-                    </tags>
-                </item>
-                <item>
-                    <uuid>1ea435ad8d024d139b116f353df2d1ef</uuid>
-                    <name>Low</name>
-                    <type>DEPENDENT</type>
-                    <key>temp_min</key>
-                    <delay>0</delay>
-                    <status>DISABLED</status>
-                    <value_type>FLOAT</value_type>
-                    <units>C</units>
-                    <preprocessing>
-                        <step>
-                            <type>JSONPATH</type>
-                            <parameters>
-                                <parameter>$.body.main.temp_min</parameter>
-                            </parameters>
-                        </step>
-                    </preprocessing>
-                    <master_item>
-                        <key>get_weather.http</key>
-                    </master_item>
                     <tags>
                         <tag>
                             <tag>Application</tag>
@@ -356,6 +464,58 @@
                     </tags>
                 </item>
                 <item>
+                    <uuid>688296a0629640fba5240fd9d7335c64</uuid>
+                    <name>Weather Raw Message</name>
+                    <type>DEPENDENT</type>
+                    <key>weather.raw</key>
+                    <delay>0</delay>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.properties.rawMessage</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>get_weather.http</key>
+                    </master_item>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>GovWeather</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>93855013c5324ca7a207b73a53eaa6b6</uuid>
+                    <name>Wind Chill</name>
+                    <type>DEPENDENT</type>
+                    <key>wind.chill</key>
+                    <delay>0</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>C</units>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.properties.windChill.value</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>get_weather.http</key>
+                    </master_item>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>GovWeather</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
                     <uuid>b1a9650879314decab4014ddb0cf4969</uuid>
                     <name>Wind Direction</name>
                     <type>DEPENDENT</type>
@@ -374,6 +534,32 @@
                         <key>get_weather.http</key>
                     </master_item>
                     <request_method>POST</request_method>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>GovWeather</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>a4856054c49e4f5591391dc672b415f9</uuid>
+                    <name>Wind Gust Speed</name>
+                    <type>DEPENDENT</type>
+                    <key>wind.gust.speed</key>
+                    <delay>0</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>Km/h</units>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.properties.windGust.value</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>get_weather.http</key>
+                    </master_item>
                     <tags>
                         <tag>
                             <tag>Application</tag>
@@ -410,9 +596,40 @@
             <macros>
                 <macro>
                     <macro>{$STATION}</macro>
-                    <value>KGCM</value>
+                    <value>Put four letter code here</value>
                 </macro>
             </macros>
         </template>
     </templates>
-</zabbix_export>
+    <graphs>
+        <graph>
+            <uuid>d56c5b8a670a4dac8c000752e8a84cf1</uuid>
+            <name>Temp with low and highs</name>
+            <graph_items>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <color>199C0D</color>
+                    <item>
+                        <host>Template App Gov Weather</host>
+                        <key>max.temperature24h</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <color>F63100</color>
+                    <item>
+                        <host>Template App Gov Weather</host>
+                        <key>min.temperature24h</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>3</sortorder>
+                    <color>2774A4</color>
+                    <item>
+                        <host>Template App Gov Weather</host>
+                        <key>temperature</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+    </graphs>
